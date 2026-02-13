@@ -6,6 +6,7 @@
   <title>Student JSON Manager Pro</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -17,44 +18,33 @@
     }
 
     @media print {
-      body { background-color: white !important; }
+      body {
+        background-color: white !important;
+      }
       nav, .fixed, button, input[type="file"], 
       .bg-white.rounded-2xl.shadow-sm.border.p-5, 
       .group\/avatar div, select {
         display: none !important;
       }
-      main { margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
+      main {
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
       .bg-white.rounded-2xl.border {
         box-shadow: none !important;
         border: 1px solid #eee !important;
         break-inside: avoid;
         margin-bottom: 10px !important;
       }
-      input, select {
-        border: none !important;
-        padding: 0 !important;
-        background: transparent !important;
-      }
     }
   </style>
-
-  <script type="importmap">
-  {
-    "imports": {
-      "react": "https://esm.sh/react@19.0.0",
-      "react-dom": "https://esm.sh/react-dom@19.0.0",
-      "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
-      "@google/genai": "https://esm.sh/@google/genai@1.0.0",
-      "lucide-react": "https://esm.sh/lucide-react@0.460.0"
-    }
-  }
-  </script>
-
-  <link rel="stylesheet" href="index.css">
+  
+  <link rel="stylesheet" href="/index.css">
 </head>
 <body>
   <div id="root"></div>
   
-  <script type="module" src="index.js"></script>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
