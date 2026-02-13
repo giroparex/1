@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { Student } from "../types";
+import { generateSampleStudents, refineStudentData } from './services/geminiService';
 
 // En Vite, usamos import.meta.env para acceder a las variables de entorno
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
