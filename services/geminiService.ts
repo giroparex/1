@@ -1,23 +1,18 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { generateSampleStudents, refineStudentData } from './services/geminiService';
+import { Student } from "../types"; // Importación corregida hacia la carpeta superior
 
-// En Vite, usamos import.meta.env para acceder a las variables de entorno
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-
-if (!API_KEY) {
-  console.warn("⚠️ No se encontró la API Key en VITE_GEMINI_API_KEY. Las funciones de IA no funcionarán.");
-}
+// Usamos import.meta.env para mayor compatibilidad con Vite en producción
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
 const ai = new GoogleGenAI(API_KEY || "");
 
 const COURSE_OPTIONS = ["LUNES A VIERNES", "V, S Y D", "INTENSIVO 1", "INTENSIVO 2"];
 
 export const generateSampleStudents = async (count: number = 5): Promise<Student[]> => {
+  // Se utiliza el modelo estable para evitar errores de preview en GitHub
   const model = ai.getGenerativeModel({ 
     model: "gemini-1.5-flash",
-    generationConfig: {
-      responseMimeType: "application/json",
-    }
+    generationConfig: { responseMimeType: "application/json" }
   });
 
   const prompt = `Genera una lista de ${count} objetos de estudiantes realistas en formato JSON. 
@@ -37,13 +32,10 @@ export const generateSampleStudents = async (count: number = 5): Promise<Student
 export const refineStudentData = async (students: Student[]): Promise<Student[]> => {
   const model = ai.getGenerativeModel({ 
     model: "gemini-1.5-flash",
-    generationConfig: {
-      responseMimeType: "application/json",
-    }
+    generationConfig: { responseMimeType: "application/json" }
   });
 
-  const prompt = `Refina esta lista de estudiantes: estandariza nombres (Mayúsculas en iniciales), 
-  asegura que los teléfonos tengan formato internacional y que el curso sea válido.
+  const prompt = `Refina esta lista de estudiantes: estandariza nombres, verifica edades y asegura formato consistente.
   Datos: ${JSON.stringify(students)}`;
 
   try {
@@ -53,15 +45,5 @@ export const refineStudentData = async (students: Student[]): Promise<Student[]>
   } catch (error) {
     console.error("Error al refinar datos:", error);
     return students;
-  }
-};
-
-  try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return JSON.parse(response.text());
-  } catch (error) {
-    console.error("Error al refinar datos:", error);
-    return students; // Devolvemos los datos originales si falla
   }
 };
