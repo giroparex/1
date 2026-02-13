@@ -1,14 +1,18 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Student } from "../types";
 
-// Usamos la variable de entorno con el prefijo VITE para compatibilidad
+// En Vite, usamos import.meta.env para acceder a las variables de entorno
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+if (!API_KEY) {
+  console.warn("⚠️ No se encontró la API Key en VITE_GEMINI_API_KEY. Las funciones de IA no funcionarán.");
+}
+
 const ai = new GoogleGenAI(API_KEY || "");
 
 const COURSE_OPTIONS = ["LUNES A VIERNES", "V, S Y D", "INTENSIVO 1", "INTENSIVO 2"];
 
 export const generateSampleStudents = async (count: number = 5): Promise<Student[]> => {
-  // Actualizamos al modelo estable gemini-1.5-flash
   const model = ai.getGenerativeModel({ 
     model: "gemini-1.5-flash",
     generationConfig: {
@@ -23,8 +27,7 @@ export const generateSampleStudents = async (count: number = 5): Promise<Student
   try {
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    const text = response.text();
-    return JSON.parse(text);
+    return JSON.parse(response.text());
   } catch (error) {
     console.error("Error en la generación de IA:", error);
     return [];
@@ -42,6 +45,16 @@ export const refineStudentData = async (students: Student[]): Promise<Student[]>
   const prompt = `Refina esta lista de estudiantes: estandariza nombres (Mayúsculas en iniciales), 
   asegura que los teléfonos tengan formato internacional y que el curso sea válido.
   Datos: ${JSON.stringify(students)}`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    return JSON.parse(response.text());
+  } catch (error) {
+    console.error("Error al refinar datos:", error);
+    return students;
+  }
+};
 
   try {
     const result = await model.generateContent(prompt);
