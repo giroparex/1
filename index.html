@@ -153,7 +153,7 @@
                                     <label className="text-[12px] font-black text-slate-400 uppercase mb-1 flex items-center gap-1">
                                         <span className="material-icons-round text-[12px]">school</span> Curso
                                     </label>
-                                    <select className="font-bold text-indigo-600 outline-none cursor-pointer" value={s.course} onChange={(e) => setStudents(students.map(st => st.id === s.id ? {...st, course: e.target.value} : st))}>
+                                    <select className="font-bold text-indigo-400 outline-none cursor-pointer" value={s.course} onChange={(e) => setStudents(students.map(st => st.id === s.id ? {...st, course: e.target.value} : st))}>
                                         {COURSE_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
                                     </select>
                                 </div>
